@@ -1,0 +1,47 @@
+# rules.yml
+version: "3.1"
+
+rules:
+- rule: Greet user
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- rule: Handle price request
+  steps:
+  - intent: ask_price
+  - action: action_lookup_price
+  - action: utter_price_response
+
+- rule: Handle inventory request
+  steps:
+  - intent: ask_inventory
+  - action: action_check_inventory
+  - action: utter_inventory_response
+
+- rule: Handle invoice lookup
+  steps:
+  - intent: check_invoice
+  - action: action_check_invoice
+  - action: utter_invoice_response
+
+- rule: Handle return request
+  steps:
+  - intent: process_return
+  - action: utter_ask_transaction_id
+  - intent: affirm
+    entities:
+    - transaction_id
+  - action: action_validate_transaction
+  - action: utter_return_confirmation
+
+- rule: Handle discount request
+  steps:
+  - intent: ask_discount
+  - action: action_offer_discount
+  - action: utter_discount_info
+
+- rule: Handle denial
+  steps:
+  - intent: deny
+  - action: utter_fallback

@@ -1,0 +1,90 @@
+# domain.yml
+version: "3.1"
+
+intents:
+  - greet
+  - ask_price
+  - ask_inventory
+  - process_return
+  - ask_discount
+  - affirm
+  - deny
+  - check_invoice
+
+entities:
+  - product
+  - color
+  - invoice_number
+  - transaction_id
+
+slots:
+  product:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: product
+  color:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: color
+  price:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: custom
+  quantity:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: custom
+  invoice_number:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: invoice_number
+  transaction_id:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: transaction_id
+
+responses:
+  utter_greet:
+    - text: "Hello! How can I assist you today?"
+  utter_price_response:
+    - text: "The price of {product} ({color}) is ${price}."
+  utter_inventory_response:
+    - text: "We have {quantity} units of {product} ({color}) in stock."
+  utter_database_error:
+    - text: "Sorry, there was an issue accessing the database. Please try again later."
+  utter_ask_product:
+    - text: "Could you please specify the product?"
+  utter_ask_transaction_id:
+    - text: "Please provide the transaction ID."
+  utter_ask_invoice_number:
+    - text: "Please provide the invoice number."
+  utter_discount_info:
+    - text: "Currently, there are no discounts available for {product} ({color})."
+  utter_fallback:
+    - text: "I'm not sure I understood. Could you please rephrase?"
+  utter_return_confirmation:
+    - text: "Your return request has been processed successfully."
+  utter_invoice_response:
+    - text: "Here are the items for invoice {invoice_number}:\n{items_text}"
+
+actions:
+  - action_lookup_price
+  - action_check_inventory
+  - action_check_invoice
+  - action_validate_transaction
+  - action_offer_discount
+  - action_default_fallback
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
